@@ -1,0 +1,5 @@
+*                             @org-fronent/sm-p01 @org-fronent/codeowners
+/src/                         @org-fronent/sm-p01 @org-fronent/codeowners
+/docs/                        @org-fronent/sm-p01 @org-fronent/codeowners
+/.github/                     @org-fronent/codeowners
+/docs/rubrica-evaluacion.md   @org-fronent/codeowners
