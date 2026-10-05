@@ -9,11 +9,11 @@ def generar_html():
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Resultado de la Suma</title>
+    <title>Suma Actualizada</title>
     <style>
         body {{
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f9;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #eef2f3;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -22,19 +22,19 @@ def generar_html():
         }}
         .card {{
             background: white;
-            padding: 2rem;
-            border-radius: 12px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            padding: 2.5rem;
+            border-radius: 16px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.12);
             text-align: center;
         }}
         h1 {{ color: #2c3e50; }}
-        .resultado {{ font-size: 2.5rem; color: #27ae60; font-weight: bold; }}
+        .resultado {{ font-size: 3rem; color: #2980b9; font-weight: bold; }}
     </style>
 </head>
 <body>
     <div class="card">
         <h1>Resultado de la Suma</h1>
-        <p>La suma de <strong>{num1}</strong> + <strong>{num2}</strong> es:</p>
+        <p>El resultado de sumar <strong>{num1}</strong> + <strong>{num2}</strong> es:</p>
         <div class="resultado">{resultado}</div>
     </div>
 </body>
