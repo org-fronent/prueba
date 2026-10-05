@@ -1,14 +1,16 @@
 import os
 
 def generar_html():
-    num1 = float(os.getenv("NUM1", 0))
-    num2 = float(os.getenv("NUM2", 0))
+    # Obtiene los números de las variables de entorno (o usa 0 por defecto)
+    num1 = float(os.getenv("NUM1", 50)) # <-- El segundo parámetro es el valor por defecto
+    num2 = float(os.getenv("NUM2", 30))
     resultado = num1 + num2
 
     contenido = f"""<!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Suma Actualizada</title>
     <style>
         body {{
@@ -26,9 +28,23 @@ def generar_html():
             border-radius: 16px;
             box-shadow: 0 8px 20px rgba(0,0,0,0.12);
             text-align: center;
+            max-width: 400px;
+            width: 90%;
         }}
-        h1 {{ color: #2c3e50; }}
-        .resultado {{ font-size: 3rem; color: #2980b9; font-weight: bold; }}
+        h1 {{ 
+            color: #2c3e50;
+            margin-bottom: 1rem;
+        }}
+        p {{
+            font-size: 1.1rem;
+            color: #555;
+        }}
+        .resultado {{ 
+            font-size: 3rem; 
+            color: #2980b9; 
+            font-weight: bold; 
+            margin-top: 1rem;
+        }}
     </style>
 </head>
 <body>

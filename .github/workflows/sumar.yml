@@ -34,8 +34,8 @@ jobs:
 
       - name: Ejecutar script y generar HTML
         env:
-          NUM1: 85   # <-- Coloca aquí el primer número
-          NUM2: 15   # <-- Coloca aquí el segundo número
+          NUM1: 50   # <-- Cambia este número
+          NUM2: 30   # <-- Cambia este número
         run: python sumar.py
 
       - name: Configurar GitHub Pages
