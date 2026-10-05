@@ -1,13 +1,26 @@
-name: Ejecutar Suma en Python
+name: Publicar Suma en GitHub Pages
 
 on:
   push:
     branches:
       - main
       - Suma
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
 
 jobs:
-  sumar-job:
+  build-and-deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
 
     steps:
@@ -19,8 +32,20 @@ jobs:
         with:
           python-version: '3.10'
 
-      - name: Ejecutar script de suma
+      - name: Ejecutar script y generar HTML
         env:
-          NUM1: 85   # <--- AQUÍ PONES EL PRIMER NÚMERO
-          NUM2: 15   # <--- AQUÍ PONES EL SEGUNDO NÚMERO
+          NUM1: 85   # <-- Coloca aquí el primer número
+          NUM2: 15   # <-- Coloca aquí el segundo número
         run: python sumar.py
+
+      - name: Configurar GitHub Pages
+        uses: actions/configure-pages@v4
+
+      - name: Subir artefacto a Pages
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: '.'
+
+      - name: Desplegar en GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
