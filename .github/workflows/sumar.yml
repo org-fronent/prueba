@@ -1,0 +1,25 @@
+name: Ejecutar Suma en Python
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  sumar-job:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout del código
+        uses: actions/checkout@v4
+
+      - name: Configurar Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+
+      - name: Ejecutar script de suma
+        env:
+          NUM1: 85   # <--- AQUÍ PONES EL PRIMER NÚMERO
+          NUM2: 15   # <--- AQUÍ PONES EL SEGUNDO NÚMERO
+        run: python sumar.py
