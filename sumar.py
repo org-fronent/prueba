@@ -1,25 +1,27 @@
 import os
 
 def generar_html():
-    # Obtiene los números de las variables de entorno (o usa 0 por defecto)
-    num1 = float(os.getenv("NUM1", 50)) # <-- El segundo parámetro es el valor por defecto
-    num2 = float(os.getenv("NUM2", 30))
-    resultado = num1 + num2
+    # Mantiene los valores por defecto desde el YAML si existen
+    num1_default = os.getenv("NUM1", "50")
+    num2_default = os.getenv("NUM2", "30")
 
     contenido = f"""<!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Suma Actualizada</title>
+    <title>Calculadora de Suma</title>
     <style>
+        * {{
+            box-sizing: border-box;
+        }}
         body {{
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background-color: #eef2f3;
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
+            min-height: 100vh;
             margin: 0;
         }}
         .card {{
@@ -33,26 +35,97 @@ def generar_html():
         }}
         h1 {{ 
             color: #2c3e50;
-            margin-bottom: 1rem;
+            margin-bottom: 1.5rem;
+            font-size: 1.8rem;
         }}
-        p {{
+        .input-group {{
+            margin-bottom: 1.2rem;
+            text-align: left;
+        }}
+        label {{
+            display: block;
+            margin-bottom: 0.4rem;
+            color: #555;
+            font-weight: 600;
+        }}
+        input[type="number"] {{
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+            outline: none;
+            transition: border-color 0.2s;
+        }}
+        input[type="number"]:focus {{
+            border-color: #2980b9;
+        }}
+        button {{
+            width: 100%;
+            padding: 0.85rem;
+            background-color: #2980b9;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 0.5rem;
+            transition: background-color 0.2s;
+        }}
+        button:hover {{
+            background-color: #1f6391;
+        }}
+        .resultado-box {{
+            margin-top: 1.5rem;
+            padding-top: 1rem;
+            border-top: 1px solid #eee;
+        }}
+        .resultado-title {{
             font-size: 1.1rem;
             color: #555;
+            margin-bottom: 0.3rem;
         }}
         .resultado {{ 
-            font-size: 3rem; 
-            color: #2980b9; 
+            font-size: 2.8rem; 
+            color: #27ae60; 
             font-weight: bold; 
-            margin-top: 1rem;
         }}
     </style>
 </head>
 <body>
     <div class="card">
-        <h1>Resultado de la Suma</h1>
-        <p>El resultado de sumar <strong>{num1}</strong> + <strong>{num2}</strong> es:</p>
-        <div class="resultado">{resultado}</div>
+        <h1>Calculadora Interactiva</h1>
+        
+        <div class="input-group">
+            <label for="num1">Primer número:</label>
+            <input type="number" id="num1" value="{num1_default}" step="any" placeholder="Ingresa un número" oninput="calcularSuma()">
+        </div>
+
+        <div class="input-group">
+            <label for="num2">Segundo número:</label>
+            <input type="number" id="num2" value="{num2_default}" step="any" placeholder="Ingresa un número" oninput="calcularSuma()">
+        </div>
+
+        <button onclick="calcularSuma()">Calcular</button>
+
+        <div class="resultado-box">
+            <div class="resultado-title">Resultado de la suma:</div>
+            <div class="resultado" id="resultado">0</div>
+        </div>
     </div>
+
+    <script>
+        function calcularSuma() {{
+            const val1 = parseFloat(document.getElementById('num1').value) || 0;
+            const val2 = parseFloat(document.getElementById('num2').value) || 0;
+            const suma = val1 + val2;
+            document.getElementById('resultado').innerText = suma;
+        }}
+
+        // Calcular automáticamente al cargar la página
+        window.onload = calcularSuma;
+    </script>
 </body>
 </html>
 """
