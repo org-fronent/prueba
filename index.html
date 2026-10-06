@@ -1,76 +1,123 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Calculadora de Suma</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      background-color: #f4f4f9;
-      margin: 0;
-    }
-    .card {
-      background: white;
-      padding: 2rem;
-      border-radius: 12px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-      text-align: center;
-      width: 300px;
-    }
-    input {
-      width: 80%;
-      padding: 10px;
-      margin: 10px 0;
-      border: 1px solid #ccc;
-      border-radius: 6px;
-      font-size: 1rem;
-      text-align: center;
-    }
-    button {
-      width: 88%;
-      padding: 10px;
-      background-color: #2563eb;
-      color: white;
-      border: none;
-      border-radius: 6px;
-      font-size: 1rem;
-      cursor: pointer;
-      margin-top: 10px;
-    }
-    button:hover {
-      background-color: #1d4ed8;
-    }
-    .resultado {
-      margin-top: 15px;
-      font-size: 1.2rem;
-      font-weight: bold;
-      color: #1e293b;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora de Suma</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #eef2f3;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+        }
+        .card {
+            background: white;
+            padding: 2.5rem;
+            border-radius: 16px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.12);
+            text-align: center;
+            max-width: 400px;
+            width: 90%;
+        }
+        h1 { 
+            color: #2c3e50;
+            margin-bottom: 1.5rem;
+            font-size: 1.8rem;
+        }
+        .input-group {
+            margin-bottom: 1.2rem;
+            text-align: left;
+        }
+        label {
+            display: block;
+            margin-bottom: 0.4rem;
+            color: #555;
+            font-weight: 600;
+        }
+        input[type="number"] {
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+        input[type="number"]:focus {
+            border-color: #2980b9;
+        }
+        button {
+            width: 100%;
+            padding: 0.85rem;
+            background-color: #2980b9;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 0.5rem;
+            transition: background-color 0.2s;
+        }
+        button:hover {
+            background-color: #1f6391;
+        }
+        .resultado-box {
+            margin-top: 1.5rem;
+            padding-top: 1rem;
+            border-top: 1px solid #eee;
+        }
+        .resultado-title {
+            font-size: 1.1rem;
+            color: #555;
+            margin-bottom: 0.3rem;
+        }
+        .resultado { 
+            font-size: 2.8rem; 
+            color: #27ae60; 
+            font-weight: bold; 
+        }
+    </style>
 </head>
 <body>
+    <div class="card">
+        <h1>Calculadora Interactiva</h1>
+        
+        <div class="input-group">
+            <label for="num1">Primer número:</label>
+            <input type="number" id="num1" value="50" step="any" placeholder="Ingresa un número" oninput="calcularSuma()">
+        </div>
 
-  <div class="card">
-    <h2>🧮 Calculadora</h2>
-    <input type="number" id="num1" placeholder="Ingresa número 1">
-    <input type="number" id="num2" placeholder="Ingresa número 2">
-    <button onclick="sumar()">Calcular Suma</button>
-    <div class="resultado" id="resultado"></div>
-  </div>
+        <div class="input-group">
+            <label for="num2">Segundo número:</label>
+            <input type="number" id="num2" value="30" step="any" placeholder="Ingresa un número" oninput="calcularSuma()">
+        </div>
 
-  <script>
-    function sumar() {
-      const n1 = parseFloat(document.getElementById('num1').value) || 0;
-      const n2 = parseFloat(document.getElementById('num2').value) || 0;
-      const suma = n1 + n2;
-      document.getElementById('resultado').innerText = `Resultado: ${suma}`;
-    }
-  </script>
+        <button onclick="calcularSuma()">Calcular</button>
 
+        <div class="resultado-box">
+            <div class="resultado-title">Resultado de la suma:</div>
+            <div class="resultado" id="resultado">0</div>
+        </div>
+    </div>
+
+    <script>
+        function calcularSuma() {
+            const val1 = parseFloat(document.getElementById('num1').value) || 0;
+            const val2 = parseFloat(document.getElementById('num2').value) || 0;
+            const suma = val1 + val2;
+            document.getElementById('resultado').innerText = suma;
+        }
+
+        // Calcular automáticamente al cargar la página
+        window.onload = calcularSuma;
+    </script>
 </body>
 </html>
