@@ -1,0 +1,39 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{ media_file.original_name }} | Vista del documento</title>
+  <link rel="stylesheet" href="{% static 'app_multimedia/site.css' %}">
+</head>
+<body class="document-preview-page">
+  <header class="document-preview-header">
+    <h1>{{ media_file.original_name }}</h1>
+    <a class="document-download" href="{% url 'media_download' media_file.pk %}">
+      <i class="fa-solid fa-download" aria-hidden="true"></i> Descargar
+    </a>
+  </header>
+  <main class="document-sheet">
+    {% for block in blocks %}
+      {% if block.type == 'title' %}
+        <h1>{{ block.text }}</h1>
+      {% elif block.type == 'heading' %}
+        {% if block.level == 1 %}<h2>{{ block.text }}</h2>
+        {% elif block.level == 2 %}<h3>{{ block.text }}</h3>
+        {% else %}<h4>{{ block.text }}</h4>{% endif %}
+      {% elif block.type == 'table' %}
+        <table><tbody>
+          {% for row in block.rows %}
+            <tr>{% for cell in row %}<td>{{ cell }}</td>{% endfor %}</tr>
+          {% endfor %}
+        </tbody></table>
+      {% else %}
+        <p>{{ block.text }}</p>
+      {% endif %}
+    {% empty %}
+      <p>Este documento no contiene texto que se pueda mostrar.</p>
+    {% endfor %}
+  </main>
+</body>
+</html>

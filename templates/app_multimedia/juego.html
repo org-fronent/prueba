@@ -1,0 +1,38 @@
+{% load static %}
+<section class="cosmos-game" aria-labelledby="cosmos-title">
+  <canvas id="canvas-3d" aria-label="Camión 3D conduciendo por una carretera con nubes y monedas"></canvas>
+  <div class="cosmos-overlay">
+    <div class="cosmos-heading">
+      <div>
+        <p class="cosmos-eyebrow">Desafío de carretera · GeoMedia Explorer</p>
+        <h2 id="cosmos-title">Ruta de monedas</h2>
+        <p class="cosmos-description">Arrastra el camión para girarlo en 3D. Usa las flechas o los botones para conducir y recoge monedas.</p>
+      </div>
+      <div class="cosmos-stats" aria-live="polite">
+        <div><span class="cosmos-stat-label">Monedas</span><strong id="game-score">0</strong></div>
+        <div><span class="cosmos-stat-label">Tiempo</span><strong id="game-time">00:30</strong></div>
+        <div><span class="cosmos-stat-label">Racha</span><strong id="game-streak">x0</strong></div>
+      </div>
+    </div>
+
+    <div class="cosmos-footer">
+      <div class="cosmos-controls">
+        <div class="cosmos-difficulty" role="group" aria-label="Elige la velocidad del juego">
+          <button class="difficulty-button" type="button" data-difficulty="suave" aria-pressed="false">Suave</button>
+          <button class="difficulty-button is-selected" type="button" data-difficulty="medio" aria-pressed="true">Medio</button>
+          <button class="difficulty-button" type="button" data-difficulty="rapido" aria-pressed="false">Rápido</button>
+        </div>
+        <div class="cosmos-drive-controls" role="group" aria-label="Controles para conducir">
+          <button class="drive-button" id="drive-left" type="button" aria-label="Girar a la izquierda" disabled>
+            <span aria-hidden="true">←</span><small>IZQUIERDA</small>
+          </button>
+          <button id="game-start" class="cosmos-start" type="button">Comenzar partida <span aria-hidden="true">→</span></button>
+          <button class="drive-button" id="drive-right" type="button" aria-label="Girar a la derecha" disabled>
+            <span aria-hidden="true">→</span><small>DERECHA</small>
+          </button>
+        </div>
+      </div>
+      <p id="game-status" class="cosmos-status" role="status" aria-live="polite">Elige la velocidad y pulsa «Comenzar». Arrastra el camión para girarlo en 3D.</p>
+    </div>
+  </div>
+</section>

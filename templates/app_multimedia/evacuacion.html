@@ -1,0 +1,127 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>App Rutas y Multimedia</title>
+
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <link rel="stylesheet" href="{% static 'app_multimedia/site.css' %}">
+  <link rel="stylesheet" href="{% static 'app_multimedia/game.css' %}">
+</head>
+<body>
+
+  <header>
+    <h1><i class="fa-solid fa-map-location-dot"></i> GeoMedia Explorer</h1>
+    <p>Planifica tus rutas y guarda tus archivos multimedia</p>
+  </header>
+
+  <main class="container">
+    {% include 'app_multimedia/juego.html' %}
+
+    <section class="card map-section">
+      <h2><i class="fa-solid fa-route"></i> Planificador de Rutas</h2>
+      
+      <div class="search-box">
+        <div class="input-group">
+          <i class="fa-solid fa-location-dot origin-icon"></i>
+          <input type="text" id="origin" placeholder="Origen (ej: Popayán o clic en mapa)">
+        </div>
+
+        <div class="input-group">
+          <i class="fa-solid fa-flag-checkered destination-icon"></i>
+          <input type="text" id="destination" placeholder="Destino (ej: Cali o clic en mapa)">
+        </div>
+
+        <button id="btn-route"><i class="fa-solid fa-compass"></i> Calcular Ruta</button>
+      </div>
+
+      <div id="route-info" class="route-info hidden">
+        <p><i class="fa-solid fa-road"></i> <strong>Distancia:</strong> <span id="info-distance">-</span></p>
+        <p><i class="fa-solid fa-clock"></i> <strong>Tiempo est.:</strong> <span id="info-duration">-</span></p>
+      </div>
+
+      <div id="map"></div>
+    </section>
+
+    <section class="card media-section">
+      <h2><i class="fa-solid fa-folder-open"></i> Gestor Multimedia y Archivos</h2>
+      
+      {% if messages %}
+        <div class="upload-messages" role="status" aria-live="polite">
+          {% for message in messages %}
+            <p class="upload-message {{ message.tags }}">{{ message }}</p>
+          {% endfor %}
+        </div>
+      {% endif %}
+
+      <form class="upload-form" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="upload-zone" id="drop-zone">
+          <i class="fa-solid fa-cloud-arrow-up upload-icon"></i>
+          <p>Arrastra y suelta archivos aquí o</p>
+          <label for="file-input" class="btn-upload">Seleccionar archivos</label>
+          <input type="file" id="file-input" name="files" multiple accept="image/*,video/*,audio/*,.pdf,.doc,.docx,.txt">
+          <p id="selection-summary" class="selection-summary" aria-live="polite">Ningún archivo seleccionado</p>
+          <ul id="selected-file-list" class="selected-file-list"></ul>
+        </div>
+        <button type="submit" id="upload-button" class="btn-submit" disabled>
+          <i class="fa-solid fa-upload"></i> Subir archivos
+        </button>
+      </form>
+
+      <div class="filters">
+        <button class="filter-btn active" data-filter="all">Todos</button>
+        <button class="filter-btn" data-filter="image">Imágenes</button>
+        <button class="filter-btn" data-filter="video">Videos</button>
+        <button class="filter-btn" data-filter="audio">Audios</button>
+        <button class="filter-btn" data-filter="document">Documentos</button>
+      </div>
+
+      <div id="media-gallery" class="media-gallery">
+        {% for item in media_files %}
+          <article class="media-item" data-category="{{ item.category }}">
+            <div class="media-preview">
+              {% if item.category == 'image' %}
+                <img src="{% url 'media_view' item.pk %}" alt="{{ item.original_name }}">
+              {% elif item.category == 'video' %}
+                <video src="{% url 'media_view' item.pk %}" controls preload="metadata"></video>
+              {% elif item.category == 'audio' %}
+                <audio src="{% url 'media_view' item.pk %}" controls preload="metadata"></audio>
+              {% else %}
+                <i class="fa-solid fa-file-lines doc-icon" aria-hidden="true"></i>
+              {% endif %}
+            </div>
+            <div class="media-info">
+              <span class="media-name" title="{{ item.original_name }}">{{ item.original_name }}</span>
+            </div>
+            <div class="media-actions">
+              <a class="media-action" href="{% url 'media_view' item.pk %}" target="_blank" rel="noopener">
+                <i class="fa-solid fa-eye" aria-hidden="true"></i> Ver
+              </a>
+              <a class="media-action" href="{% url 'media_download' item.pk %}">
+                <i class="fa-solid fa-download" aria-hidden="true"></i> Descargar
+              </a>
+              <form method="post" action="{% url 'media_delete' item.pk %}">
+                {% csrf_token %}
+                <button class="media-action delete-action" type="submit">
+                  <i class="fa-solid fa-trash" aria-hidden="true"></i> Eliminar
+                </button>
+              </form>
+            </div>
+          </article>
+        {% empty %}
+          <p class="empty-gallery">Todavía no hay archivos subidos.</p>
+        {% endfor %}
+      </div>
+    </section>
+  </main>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="{% static 'app_multimedia/main.js' %}"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="{% static 'app_multimedia/game.js' %}"></script>
+</body>
+</html>
