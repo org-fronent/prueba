@@ -10,7 +10,10 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/6.1/ref/settings/
 """
 
+import os
 from pathlib import Path
+import dj_database_url
+from pymongo import MongoClient
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -20,12 +23,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/6.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-@lwgus1w3bv88r0s)e^^bb*q4^f5g(b0r4&q7k0oh0t5#c6*ow'
+SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-@lwgus1w3bv88r0s)e^^bb*q4^f5g(b0r4&q7k0oh0t5#c6*ow')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = 'RENDER' not in os.environ
 
-ALLOWED_HOSTS = ["localhost", "127.0.0.1", "[::1]"]
+ALLOWED_HOSTS = ["localhost", "127.0.0.1", "[::1]", ".onrender.com"]
 
 
 # Application definition
@@ -42,6 +45,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',  # <-- Añadido para archivos estáticos en Render
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -68,20 +72,40 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'config.wsgi.application'
+
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [BASE_DIR / 'static']
+STATIC_ROOT = BASE_DIR / 'staticfiles'  # <-- Necesario para collectstatic en Render
+
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
-# Database
-# https://docs.djangoproject.com/en/6.1/ref/settings/#databases
-
+# Configuración de Múltiples Bases de Datos (SQLite, PostgreSQL y soporte para MongoDB)
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
+
+# Si Render provee una DATABASE_URL (PostgreSQL), la configuramos de forma dinámica
+if os.environ.get('DATABASE_URL'):
+    DATABASES['postgres'] = dj_database_url.config(
+        default=os.environ.get('DATABASE_URL'),
+        conn_max_age=600,
+        ssl_require=True
+    )
+    # Si quieres que PostgreSQL sea la base de datos principal en producción:
+    DATABASES['default'] = dj_database_url.config(
+        default=os.environ.get('DATABASE_URL'),
+        conn_max_age=600,
+        ssl_require=True
+    )
+
+# Configuración de MongoDB (Usando PyMongo / Mongosh connection)
+MONGO_URI = os.environ.get('MONGO_URI', 'mongodb://localhost:27017/')
+mongo_client = MongoClient(MONGO_URI)
+db_mongo = mongo_client['geomedia_db']  # Base de datos de MongoDB
 
 
 # Password validation
@@ -115,12 +139,7 @@ USE_I18N = True
 USE_TZ = True
 
 
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/6.1/howto/static-files/
-
 # Email
-# https://docs.djangoproject.com/en/6.1/topics/email/#topic-email-configuration
-
 MAILERS = {
     'default': {
         'BACKEND': 'django.core.mail.backends.console.EmailBackend',
