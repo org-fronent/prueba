@@ -1,0 +1,310 @@
+.cosmos-game {
+  position: relative;
+  isolation: isolate;
+  min-height: 480px;
+  height: min(65vh, 620px);
+  overflow: hidden;
+  border: 1px solid #7bb9c8;
+  border-radius: 22px;
+  background:
+    radial-gradient(ellipse at 50% 64%, rgba(255, 245, 196, 0.75), transparent 17%),
+    linear-gradient(180deg, #3c9fdb 0%, #8bd1f2 37%, #d7eff8 62%, #a8c987 75%, #455e43 100%);
+  color: #f8fafc;
+  box-shadow: 0 18px 48px rgba(15, 23, 42, 0.2);
+}
+
+#canvas-3d {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  cursor: default;
+  touch-action: none;
+}
+
+.cosmos-overlay {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  min-height: 480px;
+  height: 100%;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: clamp(1.1rem, 3vw, 2rem);
+  pointer-events: none;
+}
+
+.cosmos-heading,
+.cosmos-footer {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.cosmos-heading > div:first-child {
+  max-width: 500px;
+}
+
+.cosmos-eyebrow {
+  margin-bottom: 0.55rem;
+  color: #ffe0aa;
+  font-size: 0.7rem;
+  font-weight: 800;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.cosmos-game h2 {
+  margin: 0 0 0.6rem;
+  color: #f8fafc;
+  font-size: clamp(1.65rem, 4vw, 2.8rem);
+  letter-spacing: -0.045em;
+  line-height: 1;
+}
+
+.cosmos-description {
+  max-width: 450px;
+  color: #cbd5e1;
+  font-size: 0.93rem;
+  line-height: 1.55;
+}
+
+.cosmos-stats {
+  display: flex;
+  flex: 0 0 auto;
+  gap: 0.5rem;
+}
+
+.cosmos-stats > div {
+  min-width: 78px;
+  padding: 0.65rem 0.75rem;
+  border: 1px solid rgba(255, 235, 206, 0.25);
+  border-radius: 14px;
+  background: rgba(9, 14, 35, 0.72);
+  text-align: center;
+  backdrop-filter: blur(12px);
+}
+
+.cosmos-stat-label {
+  display: block;
+  margin-bottom: 0.2rem;
+  color: #ffd8a8;
+  font-size: 0.62rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.cosmos-stats strong {
+  color: #86efac;
+  font-size: 1.25rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.cosmos-footer {
+  align-items: flex-end;
+}
+
+.cosmos-controls {
+  display: flex;
+  flex: 0 0 auto;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.65rem;
+  pointer-events: auto;
+}
+
+.cosmos-drive-controls {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+}
+
+.drive-button {
+  display: inline-flex;
+  width: 62px;
+  height: 58px;
+  flex: 0 0 auto;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.1rem;
+  border: 1px solid rgba(255, 235, 206, 0.35);
+  border-radius: 15px;
+  background: rgba(15, 23, 42, 0.82);
+  color: #fff2d6;
+  cursor: pointer;
+  touch-action: manipulation;
+  transition: background-color 0.15s ease, transform 0.15s ease, opacity 0.15s ease;
+}
+
+.drive-button span {
+  font-size: 1.5rem;
+  font-weight: 800;
+  line-height: 1;
+}
+
+.drive-button small {
+  font-size: 0.48rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+}
+
+.drive-button:hover:not(:disabled),
+.drive-button:active:not(:disabled) {
+  background: #d97736;
+  transform: translateY(-2px);
+}
+
+.drive-button:focus-visible {
+  outline: 2px solid #ffd08a;
+  outline-offset: 2px;
+}
+
+.drive-button:disabled {
+  cursor: not-allowed;
+  opacity: 0.45;
+}
+
+.cosmos-difficulty {
+  display: flex;
+  gap: 0.35rem;
+  padding: 0.25rem;
+  border: 1px solid rgba(191, 219, 254, 0.2);
+  border-radius: 999px;
+  background: rgba(9, 14, 35, 0.78);
+  backdrop-filter: blur(12px);
+}
+
+.difficulty-button {
+  padding: 0.5rem 0.75rem;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  color: #cbd5e1;
+  font: inherit;
+  font-size: 0.78rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background-color 0.2s ease, color 0.2s ease, opacity 0.2s ease;
+}
+
+.difficulty-button:hover:not(:disabled) {
+  color: white;
+  background: rgba(148, 163, 184, 0.2);
+}
+
+.difficulty-button.is-selected {
+  background: #d97736;
+  color: white;
+  box-shadow: 0 3px 12px rgba(217, 119, 54, 0.35);
+}
+
+.difficulty-button:focus-visible {
+  outline: 2px solid #ffd08a;
+  outline-offset: 2px;
+}
+
+.difficulty-button:disabled {
+  cursor: not-allowed;
+  opacity: 0.58;
+}
+
+.cosmos-status {
+  max-width: 480px;
+  padding: 0.8rem 1rem;
+  border: 1px solid rgba(191, 219, 254, 0.18);
+  border-radius: 14px;
+  background: rgba(9, 14, 35, 0.72);
+  color: #dbeafe;
+  font-size: 0.88rem;
+  line-height: 1.45;
+  backdrop-filter: blur(12px);
+}
+
+.cosmos-start {
+  display: inline-flex;
+  flex: 0 0 auto;
+  align-items: center;
+  gap: 0.65rem;
+  padding: 0.85rem 1.1rem;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 999px;
+  background: linear-gradient(135deg, #e87937, #c2413b);
+  box-shadow: 0 10px 32px rgba(194, 65, 59, 0.3);
+  color: white;
+  font: inherit;
+  font-size: 0.88rem;
+  font-weight: 750;
+  cursor: pointer;
+  pointer-events: auto;
+  transition: filter 0.2s ease, transform 0.2s ease;
+}
+
+.cosmos-start:hover:not(:disabled) {
+  filter: brightness(1.12);
+  transform: translateY(-2px);
+}
+
+.cosmos-start:focus-visible {
+  outline: 3px solid #ffd08a;
+  outline-offset: 3px;
+}
+
+.cosmos-start:disabled {
+  cursor: wait;
+  opacity: 0.72;
+}
+
+@media (max-width: 700px) {
+  .cosmos-game,
+  .cosmos-overlay {
+    min-height: 540px;
+    height: 540px;
+  }
+
+  .cosmos-heading {
+    flex-direction: column;
+  }
+
+  .cosmos-stats > div {
+    min-width: 68px;
+  }
+
+  .cosmos-footer {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .cosmos-controls {
+    align-items: flex-start;
+  }
+
+  .cosmos-drive-controls {
+    gap: 0.35rem;
+    flex-wrap: wrap;
+  }
+
+  .cosmos-start {
+    padding: 0.8rem 0.9rem;
+    font-size: 0.78rem;
+  }
+
+  .drive-button {
+    width: 52px;
+    height: 52px;
+  }
+
+  .cosmos-status {
+    max-width: 100%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cosmos-start,
+  .difficulty-button,
+  .drive-button {
+    transition: none;
+  }
+}
